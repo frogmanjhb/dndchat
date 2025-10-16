@@ -55,26 +55,39 @@ A Dungeons & Dragons Dungeon Master chatbot built with React and Ollama, designe
 
 ### Railway Deployment
 
-1. **Connect to Railway:**
-   ```bash
-   npm install -g @railway/cli
-   railway login
-   railway init
-   ```
+**Note:** You'll need to deploy 3 separate services on Railway:
 
-2. **Add PostgreSQL database:**
-   ```bash
-   railway add postgresql
-   ```
+#### 1. PostgreSQL Database
+```bash
+railway add postgresql
+```
 
-3. **Deploy services:**
-   ```bash
-   railway up
-   ```
+#### 2. Ollama Service
+- Create new service from template: `ghcr.io/ollama/ollama:latest`
+- Set environment variables:
+  - `OLLAMA_HOST=0.0.0.0`
+  - `OLLAMA_ORIGINS=*`
 
-4. **Set environment variables in Railway dashboard:**
-   - `DATABASE_URL`: Your PostgreSQL connection string
-   - `OLLAMA_URL`: `http://ollama:11434` (internal service URL)
+#### 3. Backend API Service
+```bash
+cd backend
+railway init
+railway up
+```
+- Set environment variables:
+  - `DATABASE_URL`: Your PostgreSQL connection string
+  - `OLLAMA_URL`: `http://ollama:11434` (internal service URL)
+  - `PORT=3001`
+
+#### 4. Frontend Service
+```bash
+cd frontend
+railway init
+railway up
+```
+- Set environment variables:
+  - `PORT=3000`
+  - `REACT_APP_API_URL`: Your backend service URL
 
 ## Configuration
 

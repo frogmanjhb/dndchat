@@ -1,0 +1,13 @@
+# Railway configuration for D&D DM Chatbot Backend
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "npm install && npm start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[environments.production]
+variables = { NODE_ENV = "production" }
