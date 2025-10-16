@@ -42,7 +42,17 @@ const initDatabase = async () => {
 // Ollama client
 class OllamaClient {
   constructor(baseURL) {
-    this.baseURL = baseURL || 'http://localhost:11434';
+    // Ensure the URL has a protocol and port
+    if (baseURL && !baseURL.startsWith('http://') && !baseURL.startsWith('https://')) {
+      // Add port 11434 if not present
+      if (!baseURL.includes(':')) {
+        this.baseURL = `http://${baseURL}:11434`;
+      } else {
+        this.baseURL = `http://${baseURL}`;
+      }
+    } else {
+      this.baseURL = baseURL || 'http://localhost:11434';
+    }
   }
 
   async generateResponse(messages) {
