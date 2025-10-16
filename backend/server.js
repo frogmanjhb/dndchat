@@ -47,6 +47,7 @@ class OllamaClient {
 
   async generateResponse(messages) {
     try {
+      console.log('Attempting to connect to Ollama at:', this.baseURL);
       const response = await axios.post(`${this.baseURL}/api/chat`, {
         model: 'llama2:7b',
         messages: messages,
@@ -57,15 +58,18 @@ class OllamaClient {
           max_tokens: 1000
         }
       });
+      console.log('Ollama response received successfully');
       return response.data.message.content;
     } catch (error) {
-      console.error('Ollama API error:', error);
-      throw new Error('Failed to generate response from DM');
+      console.error('Ollama API error:', error.message);
+      console.error('Ollama URL:', this.baseURL);
+      console.error('Full error:', error);
+      throw new Error(`Failed to generate response from DM: ${error.message}`);
     }
   }
 }
 
-const ollamaClient = new OllamaClient(process.env.OLLAMA_URL);
+const ollamaClient = new OllamaClient(process.env.OLLAMA_URL || 'http://ollama:11434');
 
 // DM System Prompt
 const DM_SYSTEM_PROMPT = `You are an experienced Dungeon Master for Dungeons & Dragons 5th Edition. Your role is to:
