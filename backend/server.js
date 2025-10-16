@@ -74,6 +74,8 @@ class OllamaClient {
               top_p: 0.9,
               max_tokens: 1000
             }
+          }, {
+            timeout: 30000 // 30 second timeout
           });
           console.log(`Successfully used model: ${model}`);
           return response.data.message.content;
@@ -94,7 +96,17 @@ class OllamaClient {
   }
 }
 
-const ollamaClient = new OllamaClient(process.env.OLLAMA_URL || 'http://ollama:11434');
+// Try multiple possible Ollama URLs
+const getOllamaURL = () => {
+  const envURL = process.env.OLLAMA_URL;
+  if (envURL) return envURL;
+  
+  // Try different possible internal service names
+  const possibleNames = ['ollama', 'ollama-service', 'ollama-production'];
+  return `http://${possibleNames[0]}:11434`;
+};
+
+const ollamaClient = new OllamaClient(getOllamaURL());
 
 // DM System Prompt
 const DM_SYSTEM_PROMPT = `You are an experienced Dungeon Master for Dungeons & Dragons 5th Edition. Your role is to:
