@@ -62,7 +62,13 @@ class OllamaClient {
       // First, check what models are available
       try {
         const modelsResponse = await axios.get(`${this.baseURL}/api/tags`, { timeout: 10000 });
-        console.log('Available models:', modelsResponse.data.models?.map(m => m.name) || 'None found');
+        const availableModels = modelsResponse.data.models?.map(m => m.name) || [];
+        console.log('Available models:', availableModels);
+        
+        // If llama2:7b is available, try it first
+        if (availableModels.includes('llama2:7b')) {
+          console.log('llama2:7b is available, trying it first...');
+        }
       } catch (error) {
         console.log('Could not fetch available models:', error.message);
       }
@@ -81,10 +87,11 @@ class OllamaClient {
             options: {
               temperature: 0.8,
               top_p: 0.9,
-              max_tokens: 1000
+              max_tokens: 500,
+              num_predict: 200
             }
           }, {
-            timeout: 30000 // 30 second timeout
+            timeout: 120000 // 2 minute timeout for model loading
           });
           console.log(`Successfully used model: ${model}`);
           return response.data.message.content;
