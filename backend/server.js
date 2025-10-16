@@ -58,6 +58,15 @@ class OllamaClient {
   async generateResponse(messages) {
     try {
       console.log('Attempting to connect to Ollama at:', this.baseURL);
+      
+      // First, check what models are available
+      try {
+        const modelsResponse = await axios.get(`${this.baseURL}/api/tags`, { timeout: 10000 });
+        console.log('Available models:', modelsResponse.data.models?.map(m => m.name) || 'None found');
+      } catch (error) {
+        console.log('Could not fetch available models:', error.message);
+      }
+      
       // Try different models in order of preference
       const models = ['llama2:7b', 'mistral:7b', 'llama2', 'mistral'];
       let lastError;
