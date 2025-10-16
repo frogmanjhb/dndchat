@@ -23,7 +23,7 @@ function App() {
 
   const fetchChatHistory = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+      const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(/\/$/, '')
       const response = await fetch(`${apiUrl}/api/history`)
       if (response.ok) {
         const history = await response.json()
@@ -51,7 +51,7 @@ function App() {
     setMessages(prev => [...prev, newUserMessage])
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+      const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(/\/$/, '')
       const response = await fetch(`${apiUrl}/api/chat`, {
         method: 'POST',
         headers: {
