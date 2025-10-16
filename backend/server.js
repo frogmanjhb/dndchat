@@ -48,18 +48,33 @@ class OllamaClient {
   async generateResponse(messages) {
     try {
       console.log('Attempting to connect to Ollama at:', this.baseURL);
-      const response = await axios.post(`${this.baseURL}/api/chat`, {
-        model: 'llama2:7b',
-        messages: messages,
-        stream: false,
-        options: {
-          temperature: 0.8,
-          top_p: 0.9,
-          max_tokens: 1000
+      // Try different models in order of preference
+      const models = ['llama2:7b', 'mistral:7b', 'llama2', 'mistral'];
+      let lastError;
+      
+      for (const model of models) {
+        try {
+          console.log(`Trying model: ${model}`);
+          const response = await axios.post(`${this.baseURL}/api/chat`, {
+            model: model,
+            messages: messages,
+            stream: false,
+            options: {
+              temperature: 0.8,
+              top_p: 0.9,
+              max_tokens: 1000
+            }
+          });
+          console.log(`Successfully used model: ${model}`);
+          return response.data.message.content;
+        } catch (error) {
+          console.log(`Model ${model} failed:`, error.response?.data?.error || error.message);
+          lastError = error;
+          continue;
         }
-      });
-      console.log('Ollama response received successfully');
-      return response.data.message.content;
+      }
+      
+      throw lastError;
     } catch (error) {
       console.error('Ollama API error:', error.message);
       console.error('Ollama URL:', this.baseURL);
