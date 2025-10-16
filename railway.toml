@@ -1,0 +1,38 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+startCommand = "npm start"
+healthcheckPath = "/api/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+[environments.production]
+variables = { NODE_ENV = "production" }
+
+# Ollama Service
+[[services]]
+name = "ollama"
+source = "ghcr.io/ollama/ollama:latest"
+[services.variables]
+OLLAMA_HOST = "0.0.0.0"
+OLLAMA_ORIGINS = "*"
+
+# Backend API Service  
+[[services]]
+name = "backend"
+source = "./backend"
+[services.variables]
+PORT = "3001"
+NODE_ENV = "production"
+OLLAMA_URL = "http://ollama:11434"
+
+# Frontend Service
+[[services]]
+name = "frontend"
+source = "./frontend"
+buildCommand = "npm run build"
+startCommand = "npx serve -s dist -l 3000"
+[services.variables]
+PORT = "3000"

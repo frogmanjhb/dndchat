@@ -1,0 +1,19 @@
+{
+  "name": "dnd-dm-chatbot",
+  "version": "1.0.0",
+  "description": "A D&D Dungeon Master chatbot with React frontend and Ollama backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start"
+  },
+  "keywords": ["dnd", "chatbot", "dungeon-master", "ollama", "react"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

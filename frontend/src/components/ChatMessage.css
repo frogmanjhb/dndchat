@@ -1,0 +1,97 @@
+.message {
+  margin-bottom: 1.5rem;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.message-role {
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.message-time {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.user-message {
+  text-align: right;
+}
+
+.user-message .message-content {
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  border-radius: 15px 15px 5px 15px;
+  padding: 1rem;
+  margin-left: 20%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dm-message {
+  text-align: left;
+}
+
+.dm-message .message-content {
+  background: linear-gradient(135deg, #8B0000 0%, #A52A2A 100%);
+  border-radius: 15px 15px 15px 5px;
+  padding: 1rem;
+  margin-right: 20%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-left: 4px solid #FFD700;
+}
+
+.message-text {
+  margin: 0;
+  line-height: 1.6;
+  color: #E0E0E0;
+}
+
+.message-text:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+/* Special styling for DM messages */
+.dm-message .message-text:first-child {
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .user-message .message-content {
+    margin-left: 10%;
+  }
+  
+  .dm-message .message-content {
+    margin-right: 10%;
+  }
+  
+  .message-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+  
+  .user-message .message-header {
+    align-items: flex-end;
+  }
+}
