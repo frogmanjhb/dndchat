@@ -16,7 +16,10 @@ const pool = new Pool({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json());
 
 // Initialize database table
@@ -98,6 +101,7 @@ app.get('/api/history', async (req, res) => {
 
 app.post('/api/chat', async (req, res) => {
   try {
+    console.log('Received chat request:', req.body);
     const { message } = req.body;
     
     if (!message || message.trim() === '') {
